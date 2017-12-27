@@ -93,23 +93,7 @@ int main(int argc, char** argv) {
 
 
 
-    RTcontext context = 0;
-	RT_CHECK_ERROR( rtContextCreate( &context ) );
-	RT_CHECK_ERROR( rtContextSetRayTypeCount(context, 1) );
-	RT_CHECK_ERROR( rtContextSetEntryPointCount(context, 1) );
 
-
-	RT_CHECK_ERROR( rtBufferCreate(context, RT_BUFFER_OUTPUT, &buffer) );
-	RT_CHECK_ERROR( rtBufferSetFormat(buffer, RT_FORMAT_FLOAT4) );
-	RT_CHECK_ERROR( rtBufferSetSize2D(buffer, width, height) );
-
-
-	RTprogram program;
-	RT_CHECK_ERROR( rtProgramCreateFromPTXFile(context, "hello/hello.ptx", "hello", &program) );
-	RT_CHECK_ERROR( rtContextSetRayGenerationProgram(context, 0, program) );
-
-	RT_CHECK_ERROR( rtContextValidate(context) );
-	RT_CHECK_ERROR( rtContextLaunch2D(context, 0, width, height) );
 
 
 
@@ -122,6 +106,29 @@ int main(int argc, char** argv) {
 
     glutSetWindowTitle(argv[0]);
     glutReshapeWindow( width, height );
+
+    RTcontext context = 0;
+	RT_CHECK_ERROR( rtContextCreate( &context ) );
+	RT_CHECK_ERROR( rtContextSetRayTypeCount(context, 1) );
+	RT_CHECK_ERROR( rtContextSetEntryPointCount(context, 1) );
+
+
+	RT_CHECK_ERROR( rtBufferCreate(context, RT_BUFFER_OUTPUT, &buffer) );
+	RT_CHECK_ERROR( rtBufferSetFormat(buffer, RT_FORMAT_FLOAT4) );
+	RT_CHECK_ERROR( rtBufferSetSize2D(buffer, width, height) );
+
+	RTvariable result_buffer;
+	RT_CHECK_ERROR( rtContextDeclareVariable( context, "result_buffer", &result_buffer ) );
+	RT_CHECK_ERROR( rtVariableSetObject( result_buffer, buffer ) );	
+
+
+
+	RTprogram program;
+	RT_CHECK_ERROR( rtProgramCreateFromPTXFile(context, "hello/hello.ptx", "hello", &program) );
+	RT_CHECK_ERROR( rtContextSetRayGenerationProgram(context, 0, program) );
+
+	RT_CHECK_ERROR( rtContextValidate(context) );
+	RT_CHECK_ERROR( rtContextLaunch2D(context, 0, width, height) );    
 
     // Init state
     glMatrixMode(GL_PROJECTION);
