@@ -1,5 +1,66 @@
 
 
+
+
+
+// enum bufferPixelFormat
+// {
+//     BUFFER_PIXEL_FORMAT_DEFAULT, // The default depending on the buffer type
+//     BUFFER_PIXEL_FORMAT_RGB,     // The buffer is RGB or RGBA
+//     BUFFER_PIXEL_FORMAT_BGR,     // The buffer is BGR or BGRA
+// };
+
+bufferPixelFormat g_image_buffer_format = BUFFER_PIXEL_FORMAT_DEFAULT;
+
+GLenum glFormatFromBufferFormat(bufferPixelFormat pixel_format, RTformat buffer_format)
+{
+    if (buffer_format == RT_FORMAT_UNSIGNED_BYTE4)
+    {
+        switch (pixel_format)
+        {
+        case BUFFER_PIXEL_FORMAT_DEFAULT:
+            return GL_BGRA;
+        case BUFFER_PIXEL_FORMAT_RGB:
+            return GL_RGBA;
+        case BUFFER_PIXEL_FORMAT_BGR:
+            return GL_BGRA;
+        default:
+            throw Exception("Unknown buffer pixel format");
+        }
+    }
+    else if (buffer_format == RT_FORMAT_FLOAT4)
+    {
+        switch (pixel_format)
+        {
+        case BUFFER_PIXEL_FORMAT_DEFAULT:
+            return GL_RGBA;
+        case BUFFER_PIXEL_FORMAT_RGB:
+            return GL_RGBA;
+        case BUFFER_PIXEL_FORMAT_BGR:
+            return GL_BGRA;
+        default:
+            throw Exception("Unknown buffer pixel format");
+        }
+    }
+    else if (buffer_format == RT_FORMAT_FLOAT3)
+        switch (pixel_format)
+        {
+        case BUFFER_PIXEL_FORMAT_DEFAULT:
+            return GL_RGB;
+        case BUFFER_PIXEL_FORMAT_RGB:
+            return GL_RGB;
+        case BUFFER_PIXEL_FORMAT_BGR:
+            return GL_BGR;
+        default:
+            throw Exception("Unknown buffer pixel format");
+        }
+    else if (buffer_format == RT_FORMAT_FLOAT)
+        return GL_LUMINANCE;
+    else
+        throw Exception("Unknown buffer format");
+}
+
+
 # SRCS = $(wildcard  *.cpp)
 
 
