@@ -147,8 +147,12 @@ int main(int argc, char** argv) {
     glutMainLoop();	
 
 
+    RT_CHECK_ERROR( rtBufferDestroy( buffer ) );
+    RT_CHECK_ERROR( rtProgramDestroy( program ) );
+    RT_CHECK_ERROR( rtContextDestroy( context ) );    
+
+
 
 	
-	glutMainLoop();
 	return 0;
 }
