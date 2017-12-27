@@ -8,6 +8,8 @@ OBJS = $(SRCS:%.cpp=%.o)
 TARGET = $(OBJS:%.o=%)
 PTXES = $(CUS:%.cu=%.ptx)
 
+LIBS = -lglut
+
 
 
 all : $(TARGET) $(PTXES)
@@ -16,10 +18,10 @@ $(PTXES) :  %.ptx : %.cu
 	nvcc -ptx -Wno-deprecated-gpu-targets $< -o $@
 
 $(TARGET) : % : %.o
-	g++ $< -o $@
+	g++ $< -o $@ $(LIBS)
 
 $(OBJS) : %.o : %.cpp
-	g++ -c $< -o $@	
+	g++ -c $< -o $@
 
 clean:
 	rm -f $(OBJS) $(TARGET) $(PTXES)
