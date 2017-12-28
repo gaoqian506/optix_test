@@ -7,6 +7,7 @@ CUS = $(shell find -name *.cu)
 OBJS = $(SRCS:%.cpp=%.o)
 TARGET = $(OBJS:%.o=%)
 PTXES = $(CUS:%.cu=%.ptx)
+OUTPUT_IMAGE = output.png
 
 OPTIX_ROOT = ../../nvidia/OptiX-5.0.0
 CUDA_ROOT = /usr/local/cuda
@@ -33,7 +34,7 @@ $(OBJS) : %.o : %.cpp
 	g++ -c $< -o $@ $(INCLUDE_DIR) $(FLAGS)
 
 clean:
-	rm -f $(OBJS) $(TARGET) $(PTXES)
+	rm -f $(OBJS) $(TARGET) $(PTXES) $(OUTPUT_IMAGE)
 
 rhello:
 	./hello/hello	

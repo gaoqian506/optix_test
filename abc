@@ -4,6 +4,21 @@
 
 
 
+    optix::Ray ray(make_float3(0, 0, 0), make_float3(0, 0, 1), 0, 0.1);
+
+    float3 color = make_float3(1, 0, 0);
+    rtTrace(rtObject(), ray, color);
+    //rtTrace(top_object, ray, prd);
+
+    result_buffer[launch_index] = make_float4(color, 1);
+    //result_buffer[launch_index] = make_float4(0, 0, 1, 1);
+
+
+    // optix::size_t2 screen = result_buffer.size();
+    // float2 d = make_float2(launch_index) / make_float2(screen);
+    // //float2 d = make_float2(launch_index) /result_buffer.size();
+    // result_buffer[launch_index] = make_float4(0, d.x, d.y, 1);
+
        //  RT_CHECK_ERROR( rtBufferDestroy( buffer ) );
     // RT_CHECK_ERROR( rtProgramDestroy( program ) );
     // RT_CHECK_ERROR( rtContextDestroy( context ) );    
