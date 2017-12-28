@@ -15,7 +15,7 @@ INCLUDE_DIR = -I$(OPTIX_ROOT)/include
 INCLUDE_DIR += -I$(OPTIX_ROOT)/SDK/sutil
 INCLUDE_DIR += -I$(CUDA_ROOT)/targets/x86_64-linux/include
 LIB_DIR = -L$(OPTIX_ROOT)/lib64
-LIBS = -lglut -loptix -lGL -lGLEW
+LIBS = -lglut -loptix -lGL -lGLEW -lopencv_highgui -lopencv_core
 
 FLAGS = -g
 
@@ -35,11 +35,18 @@ $(OBJS) : %.o : %.cpp
 clean:
 	rm -f $(OBJS) $(TARGET) $(PTXES)
 
-run_hello:
+rhello:
 	./hello/hello	
 
-debug_hello:
+dhello:
 	gdb ./hello/hello		
+
+rbox:
+	./box/box
+	xdg-open output.png
+
+dbox:
+	gdb ./box/box
 
 echo:
 	echo $(SRCS)

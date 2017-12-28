@@ -9,7 +9,7 @@ rtDeclareVariable(uint2, launch_index, rtLaunchIndex, );
 //rtBuffer<float4, 2>   result_buffer;
 __device__ optix::buffer<float4, 2> result_buffer;
 
-rtDeclareVariable(float3,                draw_color, , );
+rtDeclareVariable(float3, draw_color, , );
 
 RT_PROGRAM void hello()
 {

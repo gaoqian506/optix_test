@@ -92,17 +92,11 @@ void displayBufferSwap() {
 int main(int argc, char** argv) {
 
 
-
-
-
-
-
-
-	glutInit(&argc, argv );
-	glutInitDisplayMode( GLUT_RGB | GLUT_ALPHA | GLUT_DOUBLE );
-	glutInitWindowSize( width, height );
-	glutInitWindowPosition( 100, 100 );
-	glutCreateWindow( argv[0] );
+    glutInit(&argc, argv );
+    glutInitDisplayMode( GLUT_RGB | GLUT_ALPHA | GLUT_DOUBLE );
+    glutInitWindowSize( width, height );
+    glutInitWindowPosition( 100, 100 );
+    glutCreateWindow( argv[0] );
 
     glutSetWindowTitle(argv[0]);
     glutReshapeWindow( width, height );
