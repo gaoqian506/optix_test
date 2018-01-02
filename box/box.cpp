@@ -4,7 +4,8 @@
 #include <optixu/optixpp_namespace.h>
 #include <fstream>
 #include <assert.h>
-#include <opencv2/highgui/highgui.hpp>
+
+
 
 int width = 512;
 int height = 512;
@@ -51,20 +52,32 @@ int main(int argc, char** argv) {
 
 	context["top_object"]->set(geometry_group);
 
-
 	context->validate();
 	context->launch( 0, width, height );
 
-	void* image_data = buffer->map( );
-	cv::Mat mat = cv::Mat(height, width, CV_32FC4, image_data);
-	cv::imwrite("output.png", mat * 255.0f);
+	float* image_data = (float*)buffer->map( );
+	unsigned char* rgb_data = (unsigned char*)malloc(width*height*3);
+	int total = width * height;
+	for (int i = 0; i < total; i++) {
+		rgb_data[i*3+0] = image_data[i*4+0]*255;
+		rgb_data[i*3+1] = image_data[i*4+1]*255;
+		rgb_data[i*3+2] = image_data[i*4+2]*255;
+	}
+	
+	std::ofstream out_file("output.ppm", std::ios::out | std::ios::binary);
+	assert(out_file.is_open());
+	out_file << "P6";
+	out_file << width << " " << height << std::endl << 255 << std::endl;
+	out_file.write((char*)rgb_data , width * height * 3);
+	out_file.close();
 	buffer->unmap();
-
-    buffer->destroy();
-    ray_gen_program->destroy();
-    exception_program->destroy();
-    miss_program->destroy();
-    context->destroy();
+	
+	free(rgb_data);
+	buffer->destroy();
+	ray_gen_program->destroy();
+	exception_program->destroy();
+	miss_program->destroy();
+	context->destroy();
 
 
 
