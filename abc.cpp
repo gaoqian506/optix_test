@@ -1,6 +1,25 @@
 
 
 
+
+RT_PROGRAM void intersect(int) {
+
+}
+
+RT_PROGRAM void bounds(int, float result[6]) {
+
+}
+
+RT_PROGRAM void closest_hit() {
+    //prd_color = make_float3(0, 1, 0);
+}
+
+// RT_PROGRAM void any_hit() {
+//  prd_color = make_float3(1, 1, 0);
+// }
+
+
+
 #LIB_DIR += -L/home/gq/Documents/opecv/opencv-2.4.8/lib
 
 	//cv::Mat mat = cv::Mat(height, width, CV_32FC4, image_data);
