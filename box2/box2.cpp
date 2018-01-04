@@ -19,6 +19,7 @@ int main(int argc, char** argv) {
 	context = optix::Context::create( );
 	context->setRayTypeCount( 1 );
 	context->setEntryPointCount( 1 );
+	context->setPrintEnabled(true);
 	//context->setStackSize(4640);
 
 	optix::Buffer buffer = context->createBuffer( RT_BUFFER_OUTPUT, RT_FORMAT_FLOAT4, width, height );
@@ -26,29 +27,29 @@ int main(int argc, char** argv) {
 	context->setRayGenerationProgram( 0, ray_gen_program );
 	context["output_buffer"]->set( buffer );
 	context["eye"]->setFloat(-10, 0, 0);
-	//optix::Program exception_program = context->createProgramFromPTXFile( "box/box.ptx", "exception" );
-	//context->setExceptionProgram( 0, exception_program );	
+	optix::Program exception_program = context->createProgramFromPTXFile( "shaders/ray_exception/print_exception.ptx", "exception" );
+	context->setExceptionProgram( 0, exception_program );	
 	//optix::Program miss_program = context->createProgramFromPTXFile( "box/box.ptx", "miss" );
 	//context->setMissProgram( 0, miss_program );		
 
-	 optix::Geometry box = context->createGeometry();
-	 box->setPrimitiveCount(1);
-	 optix::Program intersect_program = context->createProgramFromPTXFile("shaders/gemometries/geo_box.ptx", "box_intersect");
-	 box->setIntersectionProgram(intersect_program);
-	 optix::Program bounds_program = context->createProgramFromPTXFile("shaders/gemometries/geo_box.ptx", "box_bounds");
-	 box->setBoundingBoxProgram(bounds_program);
+	optix::Geometry box = context->createGeometry();
+	box->setPrimitiveCount(1);
+	optix::Program intersect_program = context->createProgramFromPTXFile("shaders/geometries/geo_box.ptx", "intersect");
+	box->setIntersectionProgram(intersect_program);
+	optix::Program bounds_program = context->createProgramFromPTXFile("shaders/geometries/geo_box.ptx", "bounds");
+	box->setBoundingBoxProgram(bounds_program);
 
-	// optix::Material material = context->createMaterial();
-	// optix::Program closest_hit_program = context->createProgramFromPTXFile("box/box.ptx", "closest_hit");
+	optix::Material material = context->createMaterial();
+	optix::Program closest_hit_program = context->createProgramFromPTXFile("shaders/materials/mat_normal.ptx", "closest_hit");
 	// //optix::Program any_hit_program = context->createProgramFromPTXFile("box/box.ptx", "any_hit");
-	// material->setClosestHitProgram(0, closest_hit_program);
+	material->setClosestHitProgram(0, closest_hit_program);
 
-	// optix::GeometryInstance geometry_instance = context->createGeometryInstance();
-	// geometry_instance->setGeometry(box);
-	// geometry_instance->addMaterial(material);
+	optix::GeometryInstance geometry_instance = context->createGeometryInstance();
+	geometry_instance->setGeometry(box);
+	geometry_instance->addMaterial(material);
 
 	optix::GeometryGroup geometry_group = context->createGeometryGroup();
-	//geometry_group->addChild(geometry_instance);
+	geometry_group->addChild(geometry_instance);
 	geometry_group->setAcceleration(context->createAcceleration("NoAccel"));
 
 	context["top_object"]->set(geometry_group);

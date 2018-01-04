@@ -41,6 +41,8 @@ RT_PROGRAM void pinhole_camera() {
 	rtTrace(top_object, ray, prd);
 
 	output_buffer[launch_index] = make_float4(prd.result, 1);
+
+	//rtPrintf("hello");
 }
 
 
