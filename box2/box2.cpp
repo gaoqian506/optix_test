@@ -26,7 +26,7 @@ int main(int argc, char** argv) {
 	optix::Program ray_gen_program = context->createProgramFromPTXFile( "shaders/ray_generation/pinhole_camera.ptx", "pinhole_camera" );
 	context->setRayGenerationProgram( 0, ray_gen_program );
 	context["output_buffer"]->set( buffer );
-	context["eye"]->setFloat(-10, 0, 0);
+	context["eye"]->setFloat(0, 0, -10);
 	optix::Program exception_program = context->createProgramFromPTXFile( "shaders/ray_exception/print_exception.ptx", "exception" );
 	context->setExceptionProgram( 0, exception_program );	
 	//optix::Program miss_program = context->createProgramFromPTXFile( "box/box.ptx", "miss" );
@@ -38,6 +38,8 @@ int main(int argc, char** argv) {
 	box->setIntersectionProgram(intersect_program);
 	optix::Program bounds_program = context->createProgramFromPTXFile("shaders/geometries/geo_box.ptx", "bounds");
 	box->setBoundingBoxProgram(bounds_program);
+	box["box_min"]->setFloat(-1, -1, -1);
+	box["box_max"]->setFloat(+1, +1, +1);
 
 	optix::Material material = context->createMaterial();
 	optix::Program closest_hit_program = context->createProgramFromPTXFile("shaders/materials/mat_normal.ptx", "closest_hit");

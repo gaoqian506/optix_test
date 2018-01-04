@@ -1,11 +1,13 @@
 
 #include <optix.h>
 #include <optix_math.h>
+#include "common.cuh"
 //#include <optixu/optixu_math_namespace.h>
 
 rtDeclareVariable(float3, normal, attribute normal, );
-rtDeclareVariable(float3, prd_color, rtPayload, );
 
 RT_PROGRAM void closest_hit() {
-	prd_color = normalize(normal)*0.5f+0.5f;
+
+	prd_radiance.result = normalize(rtTransformNormal(RT_OBJECT_TO_WORLD, normal))*0.5f + 0.5f;
+	//printf("closest_hit");
 }

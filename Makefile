@@ -16,6 +16,7 @@ INCLUDE_DIR = -I$(OPTIX_ROOT)/include
 INCLUDE_DIR += -I$(OPTIX_ROOT)/SDK/sutil
 INCLUDE_DIR += -I$(CUDA_ROOT)/include
 INCLUDE_DIR += -I$(CUDA_ROOT)/targets/x86_64-linux/include
+INCLUDE_DIR += -Ishaders/include
 LIB_DIR = -L$(OPTIX_ROOT)/lib64
 RPATH = $(OPTIX_ROOT)/lib64
 LIBS = -lglut -loptix -lGL -lGLEW
