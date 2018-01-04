@@ -48,6 +48,10 @@ rbox:
 	./box/box
 	xdg-open output.ppm
 
+rb2:
+	./box2/box2
+	xdg-open output.ppm	
+
 dbox:
 	gdb ./box/box
 

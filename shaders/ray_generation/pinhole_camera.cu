@@ -1,6 +1,9 @@
 
 #include <optix.h>
-#include "common.cuh"
+#include <optix_math.h>
+//#include "common.cuh"
+
+rtBuffer<float4, 2> output_buffer;
 
 
 rtDeclareVariable(float3, eye, , );
@@ -17,7 +20,12 @@ rtDeclareVariable(uint2, launch_index, rtLaunchIndex, );
 
 RT_PROGRAM void pinhole_camera() {
 
-	//output_buffer[launch_index] = make_float4(1, 1, 0, 1);
+	optix::size_t2 screen = output_buffer.size();
+	float2 d = make_float2(launch_index) / make_float2(screen);
+	float3 dir = make_float3(d, 1)-0.5;
+	optix::Ray ray(eye, dir, 0, 0.01);
+
+	output_buffer[launch_index] = make_float4(d, 0, 1);
 }
 
 
